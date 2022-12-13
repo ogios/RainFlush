@@ -237,7 +237,7 @@ class run:
     def getReadyData(self, leaf_data):
         dic = {
             "c": leaf_data["course_id"],
-            "cards_id": "",
+            "cards_id": 0,
             "cc": leaf_data["content_info"]["media"]["ccid"],
             "classroomid": leaf_data["classroom_id"],
             "cp": 4,
@@ -275,7 +275,7 @@ class run:
             "cp": count,
             "d": leaf_data["content_info"]["media"]["duration"],
             "et": "heartbeat",
-            "fp": 0,
+            "fp": 7,
             "i": 5,
             "lob": "ykt",
             "n": "ali-cdn.xuetangx.com",
@@ -286,7 +286,7 @@ class run:
             "sp": 1,
             "sq": 45,
             "t": "video",
-            "tp": 0,
+            "tp": 10,
             "ts": str(int(time.time()*1000)-200),
             "u": leaf_data["user_id"],
             "uip": "",
@@ -309,7 +309,7 @@ class run:
             "et": "videoend",
             "fp": 0,
             "i": 5,
-            "lob": "ykt",
+            "lob": "cloud4",
             "n": "ali-cdn.xuetangx.com",
             "p": "web",
             "pg": f"{leaf_data['id']}_n0ga",
@@ -338,6 +338,7 @@ class run:
                     url, headers=self.FinishHeaders, cookies=self.cookies, data=json.dumps(test_data))
                 return res
             except Exception as e:
+                print(res.text)
                 pass
             time.sleep(2)
         return False
@@ -347,17 +348,19 @@ class run:
         根据视频ccid获取视频链接
         '''
         ccid = leaf_data["content_info"]["media"]["ccid"]
+        print(ccid)
         url = self.URL_getVideoUrl
         param = {
             "video_id": ccid,
             "provider": "cc",
             "file_type": "1",
             "is_single": "0",
-            "domain": "changjiang.yuketang.cn",
+            # "domain": "changjiang.yuketang.cn",
         }
         res = requests.get(url, params=param,
                            headers=self.FinishHeaders, cookies=self.cookies)
         js = res.json()
+        print(js)
         try:
             if js["success"]:
                 sources = js["data"]["playurl"]["sources"]
@@ -389,6 +392,10 @@ class run:
             raise Exception("No Video Length Found")
         print("Video length:", duration)
         test_data["heart_data"] += [self.getReadyData(leaf_data)]
+        st = self.getHeartData(leaf_data, 11)
+        # st["lob"] = "cloud4"
+        # test_data["heart_data"] += [st]
+        test_data["heart_data"] += [self.getFinalData(leaf_data)]
         with alive_bar(duration) as bar:
             for i in range(1, int(duration/5)+1):
 
@@ -398,13 +405,6 @@ class run:
 
                 if len(test_data["heart_data"]) >= 5:
                     print("Send")
-                    # for i in range(3):
-                    #     try:
-                    #         res = requests.post(
-                    #             url, headers=self.FinishHeaders, cookies=self.cookies, data=json.dumps(test_data))
-                    #         break
-                    #     except Exception as e:
-                    #         print(Tools.color("请求失败", "red"))
                     res = self.sendHeartBeat(test_data)
                     if (res != False) & (res.text != "{}"):
                         print(Tools.color("请求失败", "red"))
