@@ -11,10 +11,10 @@ import websocket
 # global websoUrl
 # global qrQueryData
 # global loginUrl
-# websoUrl = "wss://changjiang.yuketang.cn/wsapp/"
+# websoUrl = "wss://henutdxl.yuketang.cn/wsapp/"
 # qrQueryData = json.dumps({"op": "requestlogin", "role": "web",
 #                          "version": 1.4, "type": "qrcode", "from": "web"})
-# loginUrl = "https://changjiang.yuketang.cn/pc/web_login"
+# loginUrl = "https://henutdxl.yuketang.cn/pc/web_login"
 
 PATH = os.path.dirname(__file__)+"/usercookies/"
 print("Cookie保存路径:", PATH)
@@ -36,11 +36,11 @@ def getQRCode(url: str):
 
 class User:
     def __init__(self, uid=None) -> None:
-        self.URL_websocket = "wss://changjiang.yuketang.cn/wsapp/"
+        self.URL_websocket = "wss://henutdxl.yuketang.cn/wsapp/"
         self.qrQueryData = json.dumps({"op": "requestlogin", "role": "web",
                                        "version": 1.4, "type": "qrcode", "from": "web"})
-        self.URL_login = "https://changjiang.yuketang.cn/pc/web_login"
-        self.URL_getUserInfo = "https://changjiang.yuketang.cn/v/course_meta/user_info"
+        self.URL_login = "https://henutdxl.yuketang.cn/pc/web_login"
+        self.URL_getUserInfo = "https://henutdxl.yuketang.cn/v/course_meta/user_info"
         self.flushQR = False
         self.isLogin = False
         self.wb = None
@@ -50,7 +50,7 @@ class User:
         self.cookies = None
 
         self.cookieHeaders = {
-            "Referer": "https://changjiang.yuketang.cn/web?next=/v2/web/index&type=3",
+            "Referer": "https://henutdxl.yuketang.cn/web?next=/v2/web/index&type=3",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
             "x-requested-with": "XMLHttpRequest",
         }
@@ -196,6 +196,6 @@ class User:
 
 
 if __name__ == "__main__":
-    us = User("20338209150460")
+    us = User("")
     cookie = us.getCookie()
     print(cookie)

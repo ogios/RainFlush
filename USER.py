@@ -36,7 +36,7 @@ def getQRCode(url: str):
 
 class User:
     def __init__(self, uid=None) -> None:
-        self.URL_websocket = "wss://henutdxl.yuketang.cn/wsapp/"
+        self.URL_websocket = "wss://changjiang.yuketang.cn/wsapp/"
         self.qrQueryData = json.dumps({"op": "requestlogin", "role": "web",
                                        "version": 1.4, "type": "qrcode", "from": "web"})
         self.URL_login = "https://changjiang.yuketang.cn/pc/web_login"
