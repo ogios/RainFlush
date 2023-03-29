@@ -168,6 +168,9 @@ class run:
                     for c in b["leaf_list"]:
                         if c["leaf_type"] == 0:
                             video += [c]
+                elif b["leaf_type"] == 0:
+                    video += [b]
+
         return video
 
     def getVideo(self):

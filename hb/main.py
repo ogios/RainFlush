@@ -5,7 +5,7 @@ import os
 
 
 @click.command()
-@click.option("-u", type=str, default="T104755220086", help="学号")
+@click.option("-u", type=str, default="", help="学号")
 def main(u):
     print(f"当前pid: {os.getpid()}")
     us = USER.User(u)
